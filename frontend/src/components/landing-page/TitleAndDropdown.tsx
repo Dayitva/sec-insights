@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
 import { FiTrash2 } from "react-icons/fi";
-import GitHubButton from "react-github-btn";
+// import GitHubButton from "react-github-btn";
 
 import cx from "classnames";
 import type { SelectOption } from "~/types/selection";
@@ -71,28 +71,17 @@ export const TitleAndDropdown = () => {
   }, []);
 
   return (
-    <div className="landing-page-gradient-1 relative flex h-max w-screen flex-col items-center font-lora ">
-      <div className="absolute right-4 top-4">
-        <a href="https://www.llamaindex.ai/" target="_blank">
-          <button className="flex items-center justify-center font-nunito text-lg font-bold ">
-            Built by LlamaIndex
-            <img src="logo-black.svg" className="mx-2 rounded-lg" width={40} />
-          </button>
-        </a>
-      </div>
-      <div className="mt-28 flex flex-col items-center">
-        <div className="w-4/5 text-center text-4xl">
-          Empower your organization&apos;s Business Intelligence with{" "}
-          <span className="font-bold">SEC Insights </span>
+    <div className="landing-page-gradient-1 relative flex h-max w-screen flex-col items-center font-lora">
+      <div className="mt-20 flex flex-col items-center">
+        <div className="w-5/6 text-center text-4xl">
+          <div><span className="font-bold">Arths.ai</span></div>
+          <span>The finance copilot for analysts</span>
         </div>
         <div className="mt-4 flex items-center justify-center">
           <div className="w-3/5 text-center font-nunito">
-            Effortlessly analyze multifaceted financial documents such as 10-Ks
-            and 10-Qs.
+            Effortlessly analyze multifaceted financial documents such as SEC 10-Ks
+            and 10-Qs with ease
           </div>
-        </div>
-        <div className="mt-4 flex items-center justify-center">
-          <GitHubButton href="https://github.com/run-llama/sec-insights">Open-Sourced on Github</GitHubButton>
         </div>
       </div>
       {isMobile ? (
@@ -122,7 +111,7 @@ export const TitleAndDropdown = () => {
                 </span>
               </div>
             </div>
-            <div className="m-1 flex h-[41px] w-56 items-center bg-[#F7F7F7]">
+            {/* <div className="m-1 flex h-[41px] w-56 items-center bg-[#F7F7F7]">
               <div className="flex h-[41px] w-[30px] items-center justify-center bg-[#F7F7F7] pl-3">
                 <CgFileDocument size={30} />
               </div>
@@ -143,7 +132,7 @@ export const TitleAndDropdown = () => {
                   styles={customReactSelectStyles}
                 />
               </div>
-            </div>
+            </div> */}
             <div className="m-1 flex h-[41px] w-48 items-center rounded-e bg-[#F7F7F7]">
               <div className="flex h-[41px] w-[30px] items-center justify-center bg-[#F7F7F7] pl-3">
                 <AiTwotoneCalendar size={30} />
