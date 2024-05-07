@@ -17,7 +17,7 @@ from app.schema import (
 from app.db.session import SessionLocal
 from app.api import crud
 
-DEFAULT_URL_BASE = "https://dl94gqvzlh4k8.cloudfront.net"
+DEFAULT_URL_BASE = "https://d33deq2ch0t4mo.cloudfront.net"
 DEFAULT_DOC_DIR = "data/"
 
 

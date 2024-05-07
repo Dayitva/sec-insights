@@ -285,7 +285,7 @@ def main(
     file_types: List[str] = DEFAULT_FILING_TYPES,
     before: Optional[str] = None,
     after: Optional[str] = None,
-    limit: Optional[int] = 3,
+    limit: Optional[int] = 5,
     convert_to_pdf: bool = True,
 ):
     print('Downloading filings to "{}"'.format(Path(output_dir).absolute()))
