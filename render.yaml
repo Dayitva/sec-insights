@@ -2,8 +2,8 @@ previewsEnabled: true
 databases:
   - name: arths-db
     databaseName: llama_app_db
-    plan: starter
-    previewPlan: starter
+    plan: free
+    previewPlan: free
 
 services:
   # A Docker web service
@@ -14,7 +14,7 @@ services:
     runtime: docker
     repo: https://github.com/Dayitva/sec-insights.git
     region: oregon
-    plan: starter
+    plan: free
     rootDir: ./backend
     # https://render.com/docs/blueprint-spec#scaling
     scaling:
@@ -39,7 +39,7 @@ services:
     runtime: docker
     repo: https://github.com/Dayitva/sec-insights.git
     region: oregon
-    plan: starter
+    plan: free
     rootDir: ./backend
     # set to the fake date of Feb 31st so it never runs. Meant to be manually triggered.
     schedule: "0 5 31 2 ?"
