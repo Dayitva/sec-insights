@@ -1,4 +1,3 @@
-previewsEnabled: true
 databases:
   - name: arths-db
     databaseName: llama_app_db
@@ -30,7 +29,7 @@ services:
           property: connectionString
       - fromGroup: general-settings
       - fromGroup: prod-web-secrets
-      - fromGroup: preview-web-secrets
+  
   # A Docker cron service
   # Runs the seed_db job which should only be upserts and otherwise idempotent
   # - type: cron
@@ -51,28 +50,24 @@ services:
   #     - fromGroup: general-settings
   #     - fromGroup: prod-web-secrets
   #     - fromGroup: preview-web-secrets
+
 envVarGroups:
 - name: general-settings
   envVars:
     - key: IS_PREVIEW_ENV
       value: false
-      previewValue: true
     - key: LOG_LEVEL
       value: INFO
-      previewValue: DEBUG
     - key: BACKEND_CORS_ORIGINS
       value: '["http://localhost", "http://localhost:8000", "http://localhost:3000", "http://127.0.0.1:3000", "https://arths-backend.onrender.com", "https://arths-ai.vercel.app", "http://arths.ai", "http://www.arths.ai", "https://arths.ai", "https://www.arths.ai"]'
     # S3_BUCKET_NAME is the bucket used for the StorageContext of the backend's LlamaIndex chat engine
     - key: S3_BUCKET_NAME
-      value: arths-backend-prod
-      previewValue: arths-backend-preview
+      value: arths-backend
     # S3_ASSET_BUCKET_NAME is the bucket used for app assets (e.g. document PDFs)
     - key: S3_ASSET_BUCKET_NAME
-      value: arths-web-assets-prod
-      previewValue: arths-web-assets-preview
+      value: arths-web-assets
     - key: CDN_BASE_URL
       value: https://d33deq2ch0t4mo.cloudfront.net
-      previewValue: https://d33deq2ch0t4mo.cloudfront.net
     - key: SENTRY_DSN
       sync: false
 - name: prod-web-secrets
@@ -85,16 +80,4 @@ envVarGroups:
     - key: AWS_SECRET
       sync: false
     - key: POLYGON_IO_API_KEY
-      sync: false
-- name: preview-web-secrets
-  envVars:
-    # All env vars in this group should be prefixed with "PREVIEW_"
-    # Manually add a preview value for PREVIEW_OPENAI_API_KEY in Render dashboard
-    - key: PREVIEW_OPENAI_API_KEY
-      sync: false
-    - key: PREVIEW_AWS_KEY
-      sync: false
-    - key: PREVIEW_AWS_SECRET
-      sync: false
-    - key: PREVIEW_POLYGON_IO_API_KEY
       sync: false
