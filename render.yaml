@@ -3,7 +3,6 @@ databases:
   - name: arths-db
     databaseName: llama_app_db
     plan: free
-    previewPlan: free
 
 services:
   # A Docker web service
@@ -34,24 +33,24 @@ services:
       - fromGroup: preview-web-secrets
   # A Docker cron service
   # Runs the seed_db job which should only be upserts and otherwise idempotent
-  - type: cron
-    name: llama-app-cron
-    runtime: docker
-    repo: https://github.com/Dayitva/sec-insights.git
-    region: oregon
-    plan: free
-    rootDir: ./backend
-    # set to the fake date of Feb 31st so it never runs. Meant to be manually triggered.
-    schedule: "0 5 31 2 ?"
-    dockerCommand: make seed_db_based_on_env
-    envVars:
-      - key: DATABASE_URL
-        fromDatabase:
-          name: arths-db
-          property: connectionString
-      - fromGroup: general-settings
-      - fromGroup: prod-web-secrets
-      - fromGroup: preview-web-secrets
+  # - type: cron
+  #   name: llama-app-cron
+  #   runtime: docker
+  #   repo: https://github.com/Dayitva/sec-insights.git
+  #   region: oregon
+  #   plan: free
+  #   rootDir: ./backend
+  #   # set to the fake date of Feb 31st so it never runs. Meant to be manually triggered.
+  #   schedule: "0 5 31 2 ?"
+  #   dockerCommand: make seed_db_based_on_env
+  #   envVars:
+  #     - key: DATABASE_URL
+  #       fromDatabase:
+  #         name: arths-db
+  #         property: connectionString
+  #     - fromGroup: general-settings
+  #     - fromGroup: prod-web-secrets
+  #     - fromGroup: preview-web-secrets
 envVarGroups:
 - name: general-settings
   envVars:
