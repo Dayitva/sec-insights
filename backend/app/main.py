@@ -125,6 +125,7 @@ def start():
     __setup_logging(settings.LOG_LEVEL)
     __setup_sentry()
     """Launched with `poetry run start` at root level"""
+    
     uvicorn.run(
         "app.main:app",
         host="0.0.0.0",
