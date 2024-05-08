@@ -125,7 +125,7 @@ def start():
     __setup_logging(settings.LOG_LEVEL)
     __setup_sentry()
     """Launched with `poetry run start` at root level"""
-    
+    live_reload = not settings.RENDER
     uvicorn.run(
         "app.main:app",
         host="0.0.0.0",
@@ -141,5 +141,3 @@ def start():
         logger.debug("Migrations complete")
     else:
         logger.debug("Skipping migrations")
-    live_reload = not settings.RENDER
-    
