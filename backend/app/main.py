@@ -133,6 +133,7 @@ def start():
         reload=live_reload,
         workers=settings.UVICORN_WORKER_COUNT,
     )
+    logger.debug("Finished uvicorn")
     if settings.RENDER:
         # on render.com deployments, run migrations
         logger.debug("Running migrations")
