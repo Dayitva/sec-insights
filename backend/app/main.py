@@ -110,7 +110,7 @@ if settings.BACKEND_CORS_ORIGINS:
     app.add_middleware(
         CORSMiddleware,
         allow_origins=origins,
-        allow_origin_regex="https://llama-app-frontend.*\.vercel\.app",
+        allow_origin_regex="https://arths-ai.*\.vercel\.app",
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
@@ -125,6 +125,13 @@ def start():
     __setup_logging(settings.LOG_LEVEL)
     __setup_sentry()
     """Launched with `poetry run start` at root level"""
+    uvicorn.run(
+        "app.main:app",
+        host="0.0.0.0",
+        port=8000,
+        reload=live_reload,
+        workers=settings.UVICORN_WORKER_COUNT,
+    )
     if settings.RENDER:
         # on render.com deployments, run migrations
         logger.debug("Running migrations")
@@ -134,10 +141,4 @@ def start():
     else:
         logger.debug("Skipping migrations")
     live_reload = not settings.RENDER
-    uvicorn.run(
-        "app.main:app",
-        host="0.0.0.0",
-        port=8000,
-        reload=live_reload,
-        workers=settings.UVICORN_WORKER_COUNT,
-    )
+    
