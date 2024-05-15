@@ -16,7 +16,7 @@ services:
     rootDir: ./backend
     healthCheckPath: /api/health/
     initialDeployHook: make seed_db_based_on_env
-    port: 8000
+    port: 8080
     envVars:
       - key: DATABASE_URL
         fromDatabase:
