@@ -1,8 +1,10 @@
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import { FiTrash2 } from "react-icons/fi";
 // import GitHubButton from "react-github-btn";
+
+import AuthContext from "~/stores/authContext";
 
 import cx from "classnames";
 import type { SelectOption } from "~/types/selection";
@@ -66,12 +68,21 @@ export const TitleAndDropdown = () => {
 
   const { boot } = useIntercom();
 
+  const { user, login, logout, authReady } = useContext(AuthContext);
+
   useEffect(() => {
     boot();
   }, []);
 
   return (
     <div className="landing-page-gradient-1 relative flex h-max w-screen flex-col items-center font-lora">
+      <div className="absolute right-5 top-4">
+        {authReady && user &&
+          <button onClick={logout} className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
+            Logout
+          </button>
+        }
+      </div>
       <div className="mt-20 flex flex-col items-center">
         <div className="w-5/6 text-center text-4xl">
           <div><span className="font-bold">Arths.ai</span></div>
@@ -90,7 +101,7 @@ export const TitleAndDropdown = () => {
             To start analyzing documents, please switch to a larger screen!
           </div>
         </div>
-      ) : (
+      ) : authReady && user ? (
         <div className="mt-5 flex h-min w-11/12 max-w-[1200px] flex-col items-center justify-center rounded-lg border-2 bg-white sm:h-[400px] md:w-9/12 ">
           <div className="p-4 text-center text-xl font-bold">
             Start your conversation by selecting the documents you want to
@@ -111,7 +122,7 @@ export const TitleAndDropdown = () => {
                 </span>
               </div>
             </div>
-            {/* <div className="m-1 flex h-[41px] w-56 items-center bg-[#F7F7F7]">
+            <div className="m-1 flex h-[41px] w-56 items-center bg-[#F7F7F7]">
               <div className="flex h-[41px] w-[30px] items-center justify-center bg-[#F7F7F7] pl-3">
                 <CgFileDocument size={30} />
               </div>
@@ -132,7 +143,7 @@ export const TitleAndDropdown = () => {
                   styles={customReactSelectStyles}
                 />
               </div>
-            </div> */}
+            </div>
             <div className="m-1 flex h-[41px] w-48 items-center rounded-e bg-[#F7F7F7]">
               <div className="flex h-[41px] w-[30px] items-center justify-center bg-[#F7F7F7] pl-3">
                 <AiTwotoneCalendar size={30} />
@@ -237,7 +248,7 @@ export const TitleAndDropdown = () => {
                   className={cx(
                     "m-4 rounded border bg-llama-indigo px-6 py-2 font-nunito text-white hover:bg-[#3B3775] disabled:bg-gray-30 ",
                     !isStartConversationButtonEnabled &&
-                      "border-gray-300 bg-gray-300"
+                    "border-gray-300 bg-gray-300"
                   )}
                 >
                   <div className="flex items-center justify-center">
@@ -258,6 +269,10 @@ export const TitleAndDropdown = () => {
               </div>
             </div>
           </div>
+        </div>
+      ) : (
+        <div className="mt-20 flex flex-col items-center">
+          <button onClick={login} type="button" className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Login</button>
         </div>
       )}
     </div>

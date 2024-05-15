@@ -16,7 +16,7 @@ services:
     rootDir: ./backend
     healthCheckPath: /api/health/
     initialDeployHook: make seed_db_based_on_env
-    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    port: 8000
     envVars:
       - key: DATABASE_URL
         fromDatabase:
@@ -26,32 +26,35 @@ services:
       - fromGroup: prod-web-secrets
 
 envVarGroups:
-- name: general-settings
-  envVars:
-    - key: IS_PREVIEW_ENV
-      value: false
-    - key: LOG_LEVEL
-      value: INFO
-    - key: BACKEND_CORS_ORIGINS
-      value: '["http://localhost", "http://localhost:8000", "http://localhost:3000", "http://127.0.0.1:3000", "https://arths-backend.onrender.com", "https://arths-ai.vercel.app", "http://arths.ai", "http://www.arths.ai", "https://arths.ai", "https://www.arths.ai"]'
-    # S3_BUCKET_NAME is the bucket used for the StorageContext of the backend's LlamaIndex chat engine
-    - key: S3_BUCKET_NAME
-      value: arths-backend
-    # S3_ASSET_BUCKET_NAME is the bucket used for app assets (e.g. document PDFs)
-    - key: S3_ASSET_BUCKET_NAME
-      value: arths-web-assets
-    - key: CDN_BASE_URL
-      value: https://d33deq2ch0t4mo.cloudfront.net
-    - key: SENTRY_DSN
-      sync: false
-- name: prod-web-secrets
-  envVars:
-    # Manually add a prod value for OPENAI_API_KEY in Render dashboard
-    - key: OPENAI_API_KEY
-      sync: false
-    - key: AWS_KEY
-      sync: false
-    - key: AWS_SECRET
-      sync: false
-    - key: POLYGON_IO_API_KEY
-      sync: false
+  - name: general-settings
+    envVars:
+      - key: IS_PREVIEW_ENV
+        value: false
+      - key: LOG_LEVEL
+        value: INFO
+      - key: BACKEND_CORS_ORIGINS
+        value: '["http://localhost", "http://localhost:8000", "http://localhost:3000",
+          "http://127.0.0.1:3000", "https://arths-backend.onrender.com",
+          "https://arths-ai.vercel.app", "http://arths.ai",
+          "http://www.arths.ai", "https://arths.ai", "https://www.arths.ai"]'
+      # S3_BUCKET_NAME is the bucket used for the StorageContext of the backend's LlamaIndex chat engine
+      - key: S3_BUCKET_NAME
+        value: arths-backend
+      # S3_ASSET_BUCKET_NAME is the bucket used for app assets (e.g. document PDFs)
+      - key: S3_ASSET_BUCKET_NAME
+        value: arths-web-assets
+      - key: CDN_BASE_URL
+        value: https://d33deq2ch0t4mo.cloudfront.net
+      - key: SENTRY_DSN
+        sync: false
+  - name: prod-web-secrets
+    envVars:
+      # Manually add a prod value for OPENAI_API_KEY in Render dashboard
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: AWS_KEY
+        sync: false
+      - key: AWS_SECRET
+        sync: false
+      - key: POLYGON_IO_API_KEY
+        sync: false

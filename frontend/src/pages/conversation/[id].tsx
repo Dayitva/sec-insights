@@ -161,8 +161,8 @@ export default function Conversation() {
   return (
     <PdfFocusProvider>
       <div className="flex h-[100vh] w-full items-center justify-center">
-        <div className="flex h-[100vh] w-[44vw] flex-col items-center border-r-2 bg-white">
-          <div className="flex h-[44px] w-full items-center justify-between border-b-2 ">
+        <div className="flex h-[100vh] w-full flex-col items-center border-r-2 bg-white">
+          {/* <div className="flex h-[44px] w-full items-center justify-between border-b-2 ">
             <div className="flex w-full items-center justify-between">
               <button
                 onClick={() => {
@@ -182,8 +182,8 @@ export default function Conversation() {
                 <FiShare className="ml-1" size={12} />
               </button>
             </div>
-          </div>
-          <div className="flex max-h-[calc(100vh-114px)] w-[44vw] flex-grow flex-col overflow-scroll ">
+          </div> */}
+          <div className="flex mt-5 max-h-[calc(100vh-114px)] w-full flex-grow flex-col overflow-scroll ">
             <RenderConversations
               messages={messages}
               documents={selectedDocuments}
@@ -208,13 +208,13 @@ export default function Conversation() {
             </button>
           </div>
         </div>
-        <div className="h-[100vh] w-max">
+        {/* <div className="h-[100vh] w-max">
           <DisplayMultiplePdfs pdfs={selectedDocuments} />
-        </div>
-        <ShareLinkModal
+        </div> */}
+        {/* <ShareLinkModal
           isOpen={isShareModalOpen}
           toggleModal={toggleShareModal}
-        />
+        /> */}
       </div>
     </PdfFocusProvider>
   );

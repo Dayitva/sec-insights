@@ -223,7 +223,7 @@ def get_tool_service_context(
     callback_manager = CallbackManager(callback_handlers)
     embedding_model = OpenAIEmbedding(
         mode=OpenAIEmbeddingMode.SIMILARITY_MODE,
-        model_type=OpenAIEmbeddingModelType.TEXT_EMBED_ADA_002,
+        model_type=OpenAIEmbedding(model="text-embedding-3-small"),
         api_key=settings.OPENAI_API_KEY,
     )
     # Use a smaller chunk size to retrieve more granular results
