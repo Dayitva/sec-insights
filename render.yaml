@@ -1,9 +1,7 @@
-previewsEnabled: true
 databases:
   - name: arths-db
     databaseName: llama_app_db
     plan: starter
-    previewPlan: starter
 
 services:
   # A Docker web service
@@ -25,7 +23,6 @@ services:
           property: connectionString
       - fromGroup: general-settings
       - fromGroup: prod-web-secrets
-      - fromGroup: preview-web-secrets
 
 envVarGroups:
   - name: general-settings
@@ -59,16 +56,4 @@ envVarGroups:
       - key: AWS_SECRET
         sync: false
       - key: POLYGON_IO_API_KEY
-        sync: false
-  - name: preview-web-secrets
-    envVars:
-      # All env vars in this group should be prefixed with "PREVIEW_"
-      # Manually add a preview value for PREVIEW_OPENAI_API_KEY in Render dashboard
-      - key: PREVIEW_OPENAI_API_KEY
-        sync: false
-      - key: PREVIEW_AWS_KEY
-        sync: false
-      - key: PREVIEW_AWS_SECRET
-        sync: false
-      - key: PREVIEW_POLYGON_IO_API_KEY
         sync: false
