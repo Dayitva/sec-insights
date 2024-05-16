@@ -286,11 +286,6 @@ const AssistantDisplay: React.FC<AssistantDisplayProps> = ({
               <p className="relative mb-2 mt-2 pr-3 font-nunito whitespace-pre-wrap font-bold text-gray-90">
                 {message.content}
               </p>
-              <p className="flex items-center justify-start p-1 text-xs text-gray-60">
-                This statement is for informational purposes only and does not
-                serve as professional financial advice. Please consult a
-                Certified Public Accountant
-              </p>
             </div>
           </div>
         </>
@@ -363,17 +358,17 @@ export const RenderConversations: React.FC<IRenderConversation> = ({
               <HiOutlineChatAlt2 size={40} />
             </div>
             <div className="mb-2 w-3/4 text-center text-lg font-bold">
-              Ask SEC Insights questions about the documents you&apos;ve
+              Ask Arths.ai questions about the documents you&apos;ve
               selected, such as:
             </div>
             <div className="m-auto flex w-full flex-wrap justify-center">
               <button
                 onClick={() =>
-                  setUserMessage("Which company had the highest revenue?")
+                  setUserMessage("Which quarter had the highest revenue?")
                 }
                 className="m-1 flex-shrink rounded-full border border-gray-60 px-3 py-1 hover:bg-gray-15"
               >
-                Which company had the highest revenue?
+                Which quarter had the highest revenue?
               </button>
               <button
                 onClick={() => setUserMessage("What are their main business focus areas?")}
@@ -383,11 +378,11 @@ export const RenderConversations: React.FC<IRenderConversation> = ({
               </button>
               <button
                 onClick={() =>
-                  setUserMessage("What are the biggest discussed risks?")
+                  setUserMessage("What was the growth of the company over last 4 quarters?")
                 }
                 className="m-1 flex-shrink rounded-full border border-gray-60 px-3 py-1 hover:bg-gray-15"
               >
-                What are the biggest discussed risks?
+                What was the growth of the company over last 4 quarters?
               </button>
             </div>
           </div>

@@ -21,7 +21,7 @@ export const MarketingSection = () => {
       <div className="mb-24 mt-24 flex h-max min-h-[200px] w-full items-center justify-center">
         <div className="flex flex-col items-center justify-center">
           <div className="font-bold text-llama-indigo">
-            SEC Insights presents
+            Arths.ai presents
           </div>
           <div className="w-3/4 text-center font-lora text-4xl font-bold">
             The next step in analyzing complex financial documents
@@ -67,7 +67,7 @@ export const MarketingSection = () => {
             algorithm
           </div>
           <div className="sm:3/5 mx-auto mt-3 w-4/5 font-lora text-xl sm:mx-0">
-            SEC Insights does more than give you the answer. It helps you
+            Arths.ai does more than give you the answer. It helps you
             understand how that answer was generated in the first place.
           </div>
         </div>
@@ -152,7 +152,7 @@ export const MarketingSection = () => {
                 provide feedback
               </div>
               <div className="flex items-center justify-around">
-                <a href="mailto:hi@secinsights.ai" target="_blank">
+                <a href="mailto:hi@arths.ai" target="_blank">
                   <button className="m-4 rounded border bg-llama-indigo px-8 py-2 font-bold text-white hover:bg-[#3B3775]">
                     Get in Touch
                   </button>

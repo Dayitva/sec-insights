@@ -52,7 +52,7 @@ envVarGroups:
       - key: BACKEND_CORS_ORIGINS
         value: '["http://localhost", "http://localhost:8000", "http://localhost:3000",
           "http://127.0.0.1:3000", "https://arths-backend.onrender.com",
-          "https://arths-ai.vercel.app", "http://arths.ai",
+          "https://arths-ai.vercel.app", "https://arths-ai.netlify.app" "http://arths.ai",
           "http://www.arths.ai", "https://arths.ai", "https://www.arths.ai"]'
       # S3_BUCKET_NAME is the bucket used for the StorageContext of the backend's LlamaIndex chat engine
       - key: S3_BUCKET_NAME
