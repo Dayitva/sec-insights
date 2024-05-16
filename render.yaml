@@ -12,7 +12,7 @@ services:
     runtime: docker
     repo: https://github.com/Dayitva/sec-insights.git
     region: oregon
-    plan: starter
+    plan: standard
     rootDir: ./backend
     healthCheckPath: /api/health/
     initialDeployHook: make seed_db_based_on_env
