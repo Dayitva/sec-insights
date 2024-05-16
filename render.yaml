@@ -1,7 +1,7 @@
 databases:
   - name: arths-db
     databaseName: llama_app_db
-    plan: starter
+    plan: free
 
 services:
   # A Docker web service
