@@ -1,7 +1,9 @@
+previewsEnabled: true
 databases:
   - name: arths-db
     databaseName: llama_app_db
-    plan: free
+    plan: starter
+    previewPlan: starter
 
 services:
   # A Docker web service
@@ -12,7 +14,7 @@ services:
     runtime: docker
     repo: https://github.com/Dayitva/sec-insights.git
     region: oregon
-    plan: free
+    plan: starter
     rootDir: ./backend
     healthCheckPath: /api/health/
     initialDeployHook: make seed_db_based_on_env
@@ -21,11 +23,9 @@ services:
         fromDatabase:
           name: arths-db
           property: connectionString
-      - key: PORT
-        value: 9000
       - fromGroup: general-settings
       - fromGroup: prod-web-secrets
-
+      - fromGroup: preview-web-secrets
 
 envVarGroups:
   - name: general-settings
@@ -59,4 +59,16 @@ envVarGroups:
       - key: AWS_SECRET
         sync: false
       - key: POLYGON_IO_API_KEY
+        sync: false
+  - name: preview-web-secrets
+    envVars:
+      # All env vars in this group should be prefixed with "PREVIEW_"
+      # Manually add a preview value for PREVIEW_OPENAI_API_KEY in Render dashboard
+      - key: PREVIEW_OPENAI_API_KEY
+        sync: false
+      - key: PREVIEW_AWS_KEY
+        sync: false
+      - key: PREVIEW_AWS_SECRET
+        sync: false
+      - key: PREVIEW_POLYGON_IO_API_KEY
         sync: false

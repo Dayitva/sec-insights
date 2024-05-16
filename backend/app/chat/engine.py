@@ -223,9 +223,10 @@ def get_tool_service_context(
     callback_manager = CallbackManager(callback_handlers)
     embedding_model = OpenAIEmbedding(
         mode=OpenAIEmbeddingMode.SIMILARITY_MODE,
-        model_type=OpenAIEmbedding(model="text-embedding-3-small"),
+        model_type=OpenAIEmbeddingModelType.TEXT_EMBED_ADA_002,
         api_key=settings.OPENAI_API_KEY,
     )
+    # embedding_model = OpenAIEmbedding(model="text-embedding-3-small")
     # Use a smaller chunk size to retrieve more granular results
     node_parser = SentenceSplitter.from_defaults(
         chunk_size=NODE_PARSER_CHUNK_SIZE,
