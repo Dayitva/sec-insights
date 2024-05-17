@@ -5,10 +5,17 @@
 import { createContext, useState, useEffect } from 'react'
 import netlifyIdentity from 'netlify-identity-widget'
 
-const AuthContext = createContext({
+interface User {
+  app_metadata?: {
+    roles?: string[];
+  };
+  // other properties...
+}
+
+const AuthContext = createContext<{ user: User | null, login: () => void, logout: () => void, authReady: boolean }>({
   user: null,
-  login: () => { console.log('login method not implemented') },
-  logout: () => { console.log('login method not implemented') },
+  login: () => { console.log('login method') },
+  logout: () => { console.log('logout method') },
   authReady: false
 })
 

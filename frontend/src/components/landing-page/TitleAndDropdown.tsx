@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useRouter } from "next/router";
 import React, { useEffect, useState, useContext } from "react";
 
@@ -67,7 +69,7 @@ export const TitleAndDropdown = () => {
   } = useDocumentSelector();
 
   const { boot } = useIntercom();
-
+  
   const { user, login, logout, authReady } = useContext(AuthContext);
 
   useEffect(() => {
@@ -107,7 +109,7 @@ export const TitleAndDropdown = () => {
           </div>
         </div>
       ) : authReady && user ? (
-        typeof user !== "undefined" && user.app_metadata.roles[0] === "invited" ? (
+        user?.app_metadata?.roles?.[0] === "invited" ? (
           <div className="mt-5 flex h-min w-11/12 max-w-[1200px] flex-col items-center justify-center rounded-lg border-2 bg-white sm:h-[400px] md:w-9/12 ">
             <div className="p-4 text-center text-xl font-bold">
               Start your conversation by selecting the documents you want to
