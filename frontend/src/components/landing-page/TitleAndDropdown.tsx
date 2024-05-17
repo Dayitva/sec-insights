@@ -77,21 +77,26 @@ export const TitleAndDropdown = () => {
   return (
     <div className="landing-page-gradient-1 relative flex h-max w-screen flex-col items-center font-lora">
       <div className="absolute right-5 top-4">
-        {authReady && user &&
-          <button onClick={logout} className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
+        {authReady && user && (
+          <button
+            onClick={logout}
+            className="mb-2 me-2 rounded-lg bg-gray-800 px-5 py-2.5 text-sm font-medium text-white hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+          >
             Logout
           </button>
-        }
+        )}
       </div>
       <div className="mt-20 flex flex-col items-center">
         <div className="w-5/6 text-center text-4xl">
-          <div><span className="font-bold">Arths.ai</span></div>
+          <div>
+            <span className="font-bold">Arths.ai</span>
+          </div>
           <span>The finance copilot for analysts</span>
         </div>
         <div className="mt-4 flex items-center justify-center">
           <div className="w-3/5 text-center font-nunito">
-            Effortlessly analyze multifaceted financial documents such as SEC 10-Ks
-            and 10-Qs with ease
+            Effortlessly analyze multifaceted financial documents such as SEC
+            10-Ks and 10-Qs with ease
           </div>
         </div>
       </div>
@@ -102,177 +107,193 @@ export const TitleAndDropdown = () => {
           </div>
         </div>
       ) : authReady && user ? (
-        <div className="mt-5 flex h-min w-11/12 max-w-[1200px] flex-col items-center justify-center rounded-lg border-2 bg-white sm:h-[400px] md:w-9/12 ">
-          <div className="p-4 text-center text-xl font-bold">
-            Start your conversation by selecting the documents you want to
-            explore
-          </div>
-          <div className="h-1/8 flex w-full flex-wrap items-center justify-center font-nunito">
-            <div className="m-1 flex w-96 items-center">
-              <DocumentSelectCombobox
-                selectedItem={selectedTicker}
-                setSelectedItem={selectTicker}
-                availableDocuments={availableTickers}
-                shouldFocusTicker={shouldFocusCompanySelect}
-                setFocusState={setShouldFocusCompanySelect}
-              />
-              <div className="flex h-[41px] w-[40px] items-center justify-center bg-[#F7F7F7] pr-3">
-                <span className="mt-1 font-nunito text-[13px] font-bold text-[#7F7F7F]">
-                  ⌘K
-                </span>
-              </div>
+        typeof user !== "undefined" && user.app_metadata.roles[0] === "invited" ? (
+          <div className="mt-5 flex h-min w-11/12 max-w-[1200px] flex-col items-center justify-center rounded-lg border-2 bg-white sm:h-[400px] md:w-9/12 ">
+            <div className="p-4 text-center text-xl font-bold">
+              Start your conversation by selecting the documents you want to
+              explore
             </div>
-            <div className="m-1 flex h-[41px] w-56 items-center bg-[#F7F7F7]">
-              <div className="flex h-[41px] w-[30px] items-center justify-center bg-[#F7F7F7] pl-3">
-                <CgFileDocument size={30} />
-              </div>
-              <div className="flex-grow">
-                <Select
-                  openMenuOnFocus
-                  ref={documentTypeFocusRef}
-                  options={availableDocumentTypes}
-                  onChange={selectDocumentType}
-                  getOptionLabel={(option: SelectOption) => option.label}
-                  getOptionValue={(option: SelectOption) => option.value}
-                  value={selectedDocumentType}
-                  placeholder="Select Document Type"
-                  components={{
-                    IndicatorSeparator: () => null,
-                    DropdownIndicator: () => null,
-                  }}
-                  styles={customReactSelectStyles}
+            <div className="h-1/8 flex w-full flex-wrap items-center justify-center font-nunito">
+              <div className="m-1 flex w-96 items-center">
+                <DocumentSelectCombobox
+                  selectedItem={selectedTicker}
+                  setSelectedItem={selectTicker}
+                  availableDocuments={availableTickers}
+                  shouldFocusTicker={shouldFocusCompanySelect}
+                  setFocusState={setShouldFocusCompanySelect}
                 />
-              </div>
-            </div>
-            <div className="m-1 flex h-[41px] w-48 items-center rounded-e bg-[#F7F7F7]">
-              <div className="flex h-[41px] w-[30px] items-center justify-center bg-[#F7F7F7] pl-3">
-                <AiTwotoneCalendar size={30} />
-              </div>
-              <div className="flex-grow">
-                <Select
-                  openMenuOnFocus
-                  ref={yearFocusRef}
-                  options={sortedAvailableYears || []}
-                  getOptionLabel={(option: SelectOption) => option.label}
-                  getOptionValue={(option: SelectOption) => option.value}
-                  onChange={setSelectedYear}
-                  value={selectedYear}
-                  placeholder="Select Year"
-                  components={{
-                    IndicatorSeparator: () => null,
-                    DropdownIndicator: () => null,
-                  }}
-                  styles={customReactSelectStyles}
-                />
-              </div>
-            </div>
-            <div className="relative">
-              <button
-                className="m-4 rounded border bg-llama-indigo px-8 py-2 text-white hover:bg-[#3B3775] disabled:bg-gray-30"
-                onClick={handleAddDocument}
-                disabled={!isDocumentSelectionEnabled || !selectedYear}
-              >
-                Add
-              </button>
-
-              <div className="absolute -right-[10px] bottom-[-4px] w-[140px] font-nunito text-[10px] text-[#7F7F7F]">
-                {" "}
-                <span className="font-bold">Shift + Enter </span>to add to list{" "}
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-2 flex h-full w-11/12 flex-col justify-start overflow-scroll px-4 ">
-            {selectedDocuments.length === 0 && (
-              <div className="m-4 flex h-full flex-col items-center justify-center bg-gray-00 font-nunito text-gray-90">
-                <div>
-                  <CgFileDocument size={46} />
-                </div>
-                <div className="w-84 text-center md:w-64">
-                  Use the document selector above to start adding documents
+                <div className="flex h-[41px] w-[40px] items-center justify-center bg-[#F7F7F7] pr-3">
+                  <span className="mt-1 font-nunito text-[13px] font-bold text-[#7F7F7F]">
+                    ⌘K
+                  </span>
                 </div>
               </div>
-            )}
-            {sortedSelectedDocuments.map((doc, index) => (
-              <div
-                key={index}
-                className={cx(
-                  index === 0 && "mt-2 border-t",
-                  "group flex items-center justify-between border-b p-1 font-nunito font-bold text-[#868686] hover:bg-[#EAEAF7] hover:text-[#350F66] "
-                )}
-              >
-                <div className="w-64 text-left">
-                  <span className="font-bold">{doc.ticker}</span> -{" "}
-                  {doc.fullName}
+              <div className="m-1 flex h-[41px] w-56 items-center bg-[#F7F7F7]">
+                <div className="flex h-[41px] w-[30px] items-center justify-center bg-[#F7F7F7] pl-3">
+                  <CgFileDocument size={30} />
                 </div>
-                <div className="w-24 text-left">
-                  {doc.year} {doc.quarter && `Q${doc.quarter}`}
+                <div className="flex-grow">
+                  <Select
+                    openMenuOnFocus
+                    ref={documentTypeFocusRef}
+                    options={availableDocumentTypes}
+                    onChange={selectDocumentType}
+                    getOptionLabel={(option: SelectOption) => option.label}
+                    getOptionValue={(option: SelectOption) => option.value}
+                    value={selectedDocumentType}
+                    placeholder="Select Document Type"
+                    components={{
+                      IndicatorSeparator: () => null,
+                      DropdownIndicator: () => null,
+                    }}
+                    styles={customReactSelectStyles}
+                  />
                 </div>
-                <div>{doc.docType}</div>
+              </div>
+              <div className="m-1 flex h-[41px] w-48 items-center rounded-e bg-[#F7F7F7]">
+                <div className="flex h-[41px] w-[30px] items-center justify-center bg-[#F7F7F7] pl-3">
+                  <AiTwotoneCalendar size={30} />
+                </div>
+                <div className="flex-grow">
+                  <Select
+                    openMenuOnFocus
+                    ref={yearFocusRef}
+                    options={sortedAvailableYears || []}
+                    getOptionLabel={(option: SelectOption) => option.label}
+                    getOptionValue={(option: SelectOption) => option.value}
+                    onChange={setSelectedYear}
+                    value={selectedYear}
+                    placeholder="Select Year"
+                    components={{
+                      IndicatorSeparator: () => null,
+                      DropdownIndicator: () => null,
+                    }}
+                    styles={customReactSelectStyles}
+                  />
+                </div>
+              </div>
+              <div className="relative">
                 <button
-                  className="mr-4 group-hover:text-[#FF0000]"
-                  onClick={() => handleRemoveDocument(index)}
+                  className="m-4 rounded border bg-llama-indigo px-8 py-2 text-white hover:bg-[#3B3775] disabled:bg-gray-30"
+                  onClick={handleAddDocument}
+                  disabled={!isDocumentSelectionEnabled || !selectedYear}
                 >
-                  <FiTrash2 size={24} />
+                  Add
                 </button>
-              </div>
-            ))}
-          </div>
 
-          <div className="h-1/8 mt-2 flex w-full items-center justify-center rounded-lg bg-gray-00">
-            <div className="flex flex-wrap items-center justify-center">
-              {isDocumentSelectionEnabled && (
-                <>
-                  <div className="w-48 font-nunito md:ml-8 ">
-                    Add up to{" "}
-                    <span className="font-bold">
-                      {" "}
-                      {MAX_NUMBER_OF_SELECTED_DOCUMENTS -
-                        selectedDocuments.length}
-                    </span>{" "}
-                    {isStartConversationButtonEnabled ? (
-                      <>more docs</>
-                    ) : (
-                      <>docs</>
-                    )}
+                <div className="absolute -right-[10px] bottom-[-4px] w-[140px] font-nunito text-[10px] text-[#7F7F7F]">
+                  {" "}
+                  <span className="font-bold">Shift + Enter </span>to add to
+                  list{" "}
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-2 flex h-full w-11/12 flex-col justify-start overflow-scroll px-4 ">
+              {selectedDocuments.length === 0 && (
+                <div className="m-4 flex h-full flex-col items-center justify-center bg-gray-00 font-nunito text-gray-90">
+                  <div>
+                    <CgFileDocument size={46} />
                   </div>
-                  <div className="ml-1 font-nunito ">
-                    {isStartConversationButtonEnabled ? <>or</> : <>to</>}{" "}
+                  <div className="w-84 text-center md:w-64">
+                    Use the document selector above to start adding documents
                   </div>
-                </>
+                </div>
               )}
-              <div className="md:ml-12">
-                <button
-                  disabled={!isStartConversationButtonEnabled}
-                  onClick={handleSubmit}
+              {sortedSelectedDocuments.map((doc, index) => (
+                <div
+                  key={index}
                   className={cx(
-                    "m-4 rounded border bg-llama-indigo px-6 py-2 font-nunito text-white hover:bg-[#3B3775] disabled:bg-gray-30 ",
-                    !isStartConversationButtonEnabled &&
-                    "border-gray-300 bg-gray-300"
+                    index === 0 && "mt-2 border-t",
+                    "group flex items-center justify-between border-b p-1 font-nunito font-bold text-[#868686] hover:bg-[#EAEAF7] hover:text-[#350F66] "
                   )}
                 >
-                  <div className="flex items-center justify-center">
-                    {isLoadingConversation ? (
-                      <div className="flex h-[22px] w-[180px] items-center justify-center">
-                        <LoadingSpinner />
-                      </div>
-                    ) : (
-                      <>
-                        start your conversation
-                        <div className="ml-2">
-                          <AiOutlineArrowRight />
-                        </div>
-                      </>
-                    )}
+                  <div className="w-64 text-left">
+                    <span className="font-bold">{doc.ticker}</span> -{" "}
+                    {doc.fullName}
                   </div>
-                </button>
+                  <div className="w-24 text-left">
+                    {doc.year} {doc.quarter && `Q${doc.quarter}`}
+                  </div>
+                  <div>{doc.docType}</div>
+                  <button
+                    className="mr-4 group-hover:text-[#FF0000]"
+                    onClick={() => handleRemoveDocument(index)}
+                  >
+                    <FiTrash2 size={24} />
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            <div className="h-1/8 mt-2 flex w-full items-center justify-center rounded-lg bg-gray-00">
+              <div className="flex flex-wrap items-center justify-center">
+                {isDocumentSelectionEnabled && (
+                  <>
+                    <div className="w-48 font-nunito md:ml-8 ">
+                      Add up to{" "}
+                      <span className="font-bold">
+                        {" "}
+                        {MAX_NUMBER_OF_SELECTED_DOCUMENTS -
+                          selectedDocuments.length}
+                      </span>{" "}
+                      {isStartConversationButtonEnabled ? (
+                        <>more docs</>
+                      ) : (
+                        <>docs</>
+                      )}
+                    </div>
+                    <div className="ml-1 font-nunito ">
+                      {isStartConversationButtonEnabled ? <>or</> : <>to</>}{" "}
+                    </div>
+                  </>
+                )}
+                <div className="md:ml-12">
+                  <button
+                    disabled={!isStartConversationButtonEnabled}
+                    onClick={handleSubmit}
+                    className={cx(
+                      "m-4 rounded border bg-llama-indigo px-6 py-2 font-nunito text-white hover:bg-[#3B3775] disabled:bg-gray-30 ",
+                      !isStartConversationButtonEnabled &&
+                      "border-gray-300 bg-gray-300"
+                    )}
+                  >
+                    <div className="flex items-center justify-center">
+                      {isLoadingConversation ? (
+                        <div className="flex h-[22px] w-[180px] items-center justify-center">
+                          <LoadingSpinner />
+                        </div>
+                      ) : (
+                        <>
+                          start your conversation
+                          <div className="ml-2">
+                            <AiOutlineArrowRight />
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className="mt-12 flex flex-col items-center h-1/5 w-11/12 rounded border p-4">
+            <div className="text-center text-xl font-bold">
+              You need to be invited to use the app! We are rolling them out slowly.
+            </div>
+          </div>
+
+        )
       ) : (
         <div className="mt-20 flex flex-col items-center">
-          <button onClick={login} type="button" className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Login</button>
+          <button
+            onClick={login}
+            type="button"
+            className="mb-2 me-2 rounded-lg bg-gray-800 px-5 py-2.5 text-sm font-medium text-white hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+          >
+            Sign Up/Login
+          </button>
         </div>
       )}
     </div>
