@@ -81,6 +81,7 @@ class Settings(PreviewPrefixedSettings):
     LOADER_IO_VERIFICATION_STR: str = "loaderio-e51043c635e0f4656473d3570ae5d9ec"
     SEC_EDGAR_COMPANY_NAME: str = "Arths"
     SEC_EDGAR_EMAIL: EmailStr = "example@example.com"
+    MONGO_URI: str
 
     # BACKEND_CORS_ORIGINS is a JSON-formatted list of origins
     # e.g: '["http://localhost", "http://localhost:4200", "http://localhost:3000", \

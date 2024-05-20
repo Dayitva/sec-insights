@@ -19,6 +19,10 @@ interface GetConversationReturnType {
   documents: SecDocument[];
 }
 
+interface WaitlistMessage {
+  message: string;
+}
+
 class BackendClient {
   private async get(endpoint: string) {
     const url = backendUrl + endpoint;
@@ -72,6 +76,14 @@ class BackendClient {
     const data = (await res.json()) as BackendDocument[];
     const docs = fromBackendDocumentToFrontend(data);
     return docs;
+  }
+
+  public async addWaitlist(user: string[]): Promise<string> {
+    const endpoint = "api/waitlist/";
+    const payload = user;
+    const res = await this.post(endpoint, payload);
+    const message = (await res.json()) as WaitlistMessage;
+    return message["message"];
   }
 }
 

@@ -24,6 +24,7 @@ import { customReactSelectStyles } from "~/styles/react-select";
 import { useIntercom } from "react-use-intercom";
 import { LoadingSpinner } from "~/components/basics/Loading";
 import useIsMobile from "~/hooks/utils/useIsMobile";
+import Waitlist from "../waitlist/Waitlist";
 
 export const TitleAndDropdown = () => {
   const router = useRouter();
@@ -69,7 +70,7 @@ export const TitleAndDropdown = () => {
   } = useDocumentSelector();
 
   const { boot } = useIntercom();
-  
+
   const { user, login, logout, authReady } = useContext(AuthContext);
 
   useEffect(() => {
@@ -79,12 +80,20 @@ export const TitleAndDropdown = () => {
   return (
     <div className="landing-page-gradient-1 relative flex h-max w-screen flex-col items-center font-lora">
       <div className="absolute right-5 top-4">
-        {authReady && user && (
+        {authReady && user ? (
           <button
             onClick={logout}
             className="mb-2 me-2 rounded-lg bg-gray-800 px-5 py-2.5 text-sm font-medium text-white hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
           >
             Logout
+          </button>
+        ) : (
+          <button
+            onClick={login}
+            type="button"
+            className="mb-2 me-2 rounded-lg bg-gray-800 px-5 py-2.5 text-sm font-medium text-white hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+          >
+            Sign Up/Login
           </button>
         )}
       </div>
@@ -257,7 +266,7 @@ export const TitleAndDropdown = () => {
                     className={cx(
                       "m-4 rounded border bg-llama-indigo px-6 py-2 font-nunito text-white hover:bg-[#3B3775] disabled:bg-gray-30 ",
                       !isStartConversationButtonEnabled &&
-                      "border-gray-300 bg-gray-300"
+                        "border-gray-300 bg-gray-300"
                     )}
                   >
                     <div className="flex items-center justify-center">
@@ -280,22 +289,25 @@ export const TitleAndDropdown = () => {
             </div>
           </div>
         ) : (
-          <div className="mt-12 flex flex-col items-center h-1/5 w-11/12 rounded border p-4">
-            <div className="text-center text-xl font-bold">
-              You need to be invited to use the app! We are rolling them out slowly.
+          <div>
+            <div className="mt-12 flex h-1/5 w-full flex-col items-center rounded border p-4">
+              <div className="text-center text-xl font-bold">
+                We are currently invite-only. Fill the form to get on the
+                waitlist
+              </div>
             </div>
+            <Waitlist />
           </div>
-
         )
       ) : (
-        <div className="mt-20 flex flex-col items-center">
-          <button
-            onClick={login}
-            type="button"
-            className="mb-2 me-2 rounded-lg bg-gray-800 px-5 py-2.5 text-sm font-medium text-white hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
-          >
-            Sign Up/Login
-          </button>
+        <div>
+          <div className="mt-12 flex h-1/5 w-full flex-col items-center rounded border p-4">
+            <div className="text-center text-xl font-bold">
+              We are currently invite-only. Fill the form to get on the
+              waitlist
+            </div>
+          </div>
+          <Waitlist />
         </div>
       )}
     </div>

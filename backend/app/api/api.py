@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.api.endpoints import conversation, health, documents
+from app.api.endpoints import conversation, health, documents, waitlist
 
 api_router = APIRouter()
 api_router.include_router(
@@ -8,3 +8,4 @@ api_router.include_router(
 )
 api_router.include_router(documents.router, prefix="/document", tags=["document"])
 api_router.include_router(health.router, prefix="/health", tags=["health"])
+api_router.include_router(waitlist.router, prefix="/waitlist", tags=["waitlist"])
