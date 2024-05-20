@@ -4,37 +4,28 @@ from pathlib import Path
 from datetime import datetime
 import s3fs
 from fsspec.asyn import AsyncFileSystem
-from llama_index import (
-    ServiceContext,
-    VectorStoreIndex,
-    StorageContext,
-    load_indices_from_storage,
-)
-from llama_index.vector_stores.types import VectorStore
+from llama_index.core import Settings, VectorStoreIndex, StorageContext, load_indices_from_storage
+from llama_index.core.vector_stores.types import VectorStore
 from tempfile import TemporaryDirectory
 import requests
 import nest_asyncio
 from datetime import timedelta
 from cachetools import cached, TTLCache
-from llama_index.readers.file.docs_reader import PDFReader
-from llama_index.schema import Document as LlamaIndexDocument
-from llama_index.agent import OpenAIAgent
-from llama_index.llms import ChatMessage, OpenAI
-from llama_index.embeddings.openai import (
-    OpenAIEmbedding,
-    OpenAIEmbeddingMode,
-    OpenAIEmbeddingModelType,
-)
-from llama_index.llms.base import MessageRole
-from llama_index.callbacks.base import BaseCallbackHandler, CallbackManager
-from llama_index.tools import QueryEngineTool, ToolMetadata
-from llama_index.query_engine import SubQuestionQueryEngine
-from llama_index.indices.query.base import BaseQueryEngine
-from llama_index.vector_stores.types import (
-    MetadataFilters,
-    ExactMatchFilter,
-)
-from llama_index.node_parser import SentenceSplitter
+from llama_index.core import SimpleDirectoryReader
+from llama_index.readers.file.docs import PDFReader
+# from llama_index.readers.file.pymu_pdf import PyMuPDFReader
+from llama_index.core.schema import Document as LlamaIndexDocument
+from llama_index.agent.openai import OpenAIAgent
+from llama_index.core.llms import ChatMessage
+from llama_index.llms.openai import OpenAI
+from llama_index.embeddings.openai import OpenAIEmbedding, OpenAIEmbeddingMode, OpenAIEmbeddingModelType
+from llama_index.core.llms import MessageRole
+from llama_index.core.callbacks.base import BaseCallbackHandler
+from llama_index.core.callbacks import CallbackManager
+from llama_index.core.tools import QueryEngineTool, ToolMetadata
+from llama_index.core.query_engine import SubQuestionQueryEngine, BaseQueryEngine
+from llama_index.core.vector_stores import MetadataFilters, ExactMatchFilter
+from llama_index.core.node_parser import SentenceSplitter
 from app.core.config import settings
 from app.schema import (
     Message as MessageSchema,
@@ -132,11 +123,11 @@ def get_storage_context(
 
 
 async def build_doc_id_to_index_map(
-    service_context: ServiceContext,
     documents: List[DocumentSchema],
     fs: Optional[AsyncFileSystem] = None,
 ) -> Dict[str, VectorStoreIndex]:
     persist_dir = f"{settings.S3_BUCKET_NAME}"
+    update_global_settings([])
 
     vector_store = await get_vector_store_singleton()
     try:
@@ -154,7 +145,6 @@ async def build_doc_id_to_index_map(
         indices = load_indices_from_storage(
             storage_context,
             index_ids=index_ids,
-            service_context=service_context,
         )
         doc_id_to_index = dict(zip(index_ids, indices))
         logger.debug("Loaded indices from storage.")
@@ -173,7 +163,6 @@ async def build_doc_id_to_index_map(
             index = VectorStoreIndex.from_documents(
                 llama_index_docs,
                 storage_context=storage_context,
-                service_context=service_context,
             )
             index.set_index_id(str(doc.id))
             index.storage_context.persist(persist_dir=persist_dir, fs=fs)
@@ -211,45 +200,40 @@ def get_chat_history(
     return chat_history
 
 
-def get_tool_service_context(
+def update_global_settings(
     callback_handlers: List[BaseCallbackHandler],
-) -> ServiceContext:
-    llm = OpenAI(
+):   
+    Settings.llm = OpenAI(
         temperature=0,
         model=OPENAI_TOOL_LLM_NAME,
         streaming=False,
         api_key=settings.OPENAI_API_KEY,
     )
-    callback_manager = CallbackManager(callback_handlers)
-    embedding_model = OpenAIEmbedding(
-        mode=OpenAIEmbeddingMode.SIMILARITY_MODE,
-        model_type=OpenAIEmbeddingModelType.TEXT_EMBED_ADA_002,
-        api_key=settings.OPENAI_API_KEY,
-    )
-    # embedding_model = OpenAIEmbedding(model="text-embedding-3-small")
+    Settings.callback_manager = CallbackManager(callback_handlers)
+    # embedding_model = OpenAIEmbedding(
+    #     mode=OpenAIEmbeddingMode.SIMILARITY_MODE,
+    #     model_type=OpenAIEmbeddingModelType.TEXT_EMBED_ADA_002,
+    #     api_key=settings.OPENAI_API_KEY,
+    # )
+    Settings.embed_model = OpenAIEmbedding(model="text-embedding-3-small")
     # Use a smaller chunk size to retrieve more granular results
-    node_parser = SentenceSplitter.from_defaults(
+    Settings.node_parser = SentenceSplitter.from_defaults(
         chunk_size=NODE_PARSER_CHUNK_SIZE,
         chunk_overlap=NODE_PARSER_CHUNK_OVERLAP,
-        callback_manager=callback_manager,
+        callback_manager=Settings.callback_manager,
     )
-    service_context = ServiceContext.from_defaults(
-        callback_manager=callback_manager,
-        llm=llm,
-        embed_model=embedding_model,
-        node_parser=node_parser,
-    )
-    return service_context
+
+    return 1
 
 
 async def get_chat_engine(
     callback_handler: BaseCallbackHandler,
     conversation: ConversationSchema,
 ) -> OpenAIAgent:
-    service_context = get_tool_service_context([callback_handler])
     s3_fs = get_s3_fs()
+    update_global_settings([])
     doc_id_to_index = await build_doc_id_to_index_map(
-        service_context, conversation.documents, fs=s3_fs
+        conversation.documents, fs=s3_fs
     )
     id_to_doc: Dict[str, DocumentSchema] = {
         str(doc.id): doc for doc in conversation.documents
@@ -266,25 +250,23 @@ async def get_chat_engine(
         for doc_id, index in doc_id_to_index.items()
     ]
 
-    response_synth = get_custom_response_synth(service_context, conversation.documents)
+    response_synth = get_custom_response_synth(conversation.documents)
 
     qualitative_question_engine = SubQuestionQueryEngine.from_defaults(
         query_engine_tools=vector_query_engine_tools,
-        service_context=service_context,
         response_synthesizer=response_synth,
         verbose=settings.VERBOSE,
         use_async=True,
     )
 
     api_query_engine_tools = [
-        get_api_query_engine_tool(doc, service_context)
+        get_api_query_engine_tool(doc)
         for doc in conversation.documents
         if DocumentMetadataKeysEnum.SEC_DOCUMENT in doc.metadata_map
     ]
 
     quantitative_question_engine = SubQuestionQueryEngine.from_defaults(
         query_engine_tools=api_query_engine_tools,
-        service_context=service_context,
         response_synthesizer=response_synth,
         verbose=settings.VERBOSE,
         use_async=True,
@@ -337,7 +319,7 @@ Any questions about company-related financials or other metrics should be asked 
         chat_history=chat_history,
         verbose=settings.VERBOSE,
         system_prompt=SYSTEM_MESSAGE.format(doc_titles=doc_titles, curr_date=curr_date),
-        callback_manager=service_context.callback_manager,
+        callback_manager=Settings.callback_manager,
         max_function_calls=3,
     )
 

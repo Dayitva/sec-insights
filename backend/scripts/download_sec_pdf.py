@@ -18,28 +18,28 @@ DEFAULT_CIKS = [
     "789019",
     # AMZN
     "0001018724",
-    # # GOOGL
-    # "1652044",
-    # # META
-    # "1326801",
-    # # TSLA
-    # "1318605",
-    # # NVDA
-    # "1045810",
-    # # NFLX
-    # "1065280",
-    # # PYPL
-    # "0001633917",
-    # # PFE (Pfizer)
-    # "78003",
-    # # AZNCF (AstraZeneca)
-    # "901832",
-    # # LLY (Eli Lilly)
-    # "59478",
-    # # MRNA (Moderna)
-    # "1682852",
-    # # JNJ (Johnson & Johnson)
-    # "200406",
+    # GOOGL
+    "1652044",
+    # META
+    "1326801",
+    # TSLA
+    "1318605",
+    # NVDA
+    "1045810",
+    # NFLX
+    "1065280",
+    # PYPL
+    "0001633917",
+    # PFE (Pfizer)
+    "78003",
+    # AZNCF (AstraZeneca)
+    "901832",
+    # LLY (Eli Lilly)
+    "59478",
+    # MRNA (Moderna)
+    "1682852",
+    # JNJ (Johnson & Johnson)
+    "200406",
 ]
 
 # DEFAULT_CIKS = [

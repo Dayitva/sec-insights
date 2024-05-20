@@ -18,6 +18,7 @@ from app.db.session import SessionLocal
 from app.api import crud
 
 DEFAULT_URL_BASE = "https://d33deq2ch0t4mo.cloudfront.net"
+# DEFAULT_URL_BASE = "http://arths-web-assets.s3-website.localhost.localstack.cloud:4566"
 DEFAULT_DOC_DIR = "data/"
 
 
