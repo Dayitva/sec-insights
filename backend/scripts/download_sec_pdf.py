@@ -236,8 +236,7 @@ DEFAULT_CIKS = [
 # ]
 
 DEFAULT_FILING_TYPES = [
-    "10-K",
-    "10-Q"
+    "10-K"
 ]
 
 
