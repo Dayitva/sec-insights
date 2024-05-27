@@ -4,6 +4,7 @@ import datetime
 
 import pandas as pd
 from pydantic import BaseModel
+from sec_cik_mapper import StockMapper
 
 
 class Filing(BaseModel):
@@ -99,7 +100,7 @@ def parse_cik_from_full_submission_txt(
 
 
 def parse_ticker_symbol_from_full_submission_txt(
-    full_submission_txt_file_path: Path,
+    full_submission_txt_file_path: Path, cik: str
 ) -> str:
     """
     Very hacky approach to parsing the ticker symbol from the full-submission.txt file.
@@ -110,8 +111,15 @@ def parse_ticker_symbol_from_full_submission_txt(
         full_submission_txt_file_path, "<FILENAME>"
     )
     ticker_symbol_line = ticker_symbol_line.split("<FILENAME>")[1].strip()
-    ticker_symbol = ticker_symbol_line.split("-")[0].strip()
-    return ticker_symbol.upper()
+    ticker_symbol = ticker_symbol_line.split("-")[0].strip().upper()
+    
+    mapper = StockMapper()
+    ticker_symbol_mapper = list(mapper.cik_to_tickers[cik])[0]
+
+    if ticker_symbol_mapper != ticker_symbol:
+        print(f"CIK: {cik} - Ticker Symbol: {ticker_symbol} - Ticker Symbol Mapper: {ticker_symbol_mapper}")
+        
+    return ticker_symbol_mapper.upper()
 
 
 def get_available_filings(output_dir: str) -> List[Filing]:
@@ -139,7 +147,7 @@ def get_available_filings(output_dir: str) -> List[Filing]:
                     accession_number = filing_dir.name.strip()
                     cik = parse_cik_from_full_submission_txt(full_submission_txt)
                     symbol = parse_ticker_symbol_from_full_submission_txt(
-                        full_submission_txt
+                        full_submission_txt, cik
                     )
                     filing = Filing(
                         file_path=file_path,
